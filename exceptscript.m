@@ -31,14 +31,20 @@ for i=1:length(mA)
     
 %   Same comparison method, even fewer matches, EX_trp_L(e) is actually a
 %   rxn
-%     excrxnname=strcat('EX_',strcat(mA{i},'(e)'));
-%     excrxnind=find(strcmp(excrxnname,breast_tumor.rxns));
-%     if isempty(excrxnind)   %No match for this met
-%         indices=[indices i];
-%     end
-
-    check=regexp(breast_tumor.rxns,trimmet);    %regexp has loosest definitions of a match, glyc matches w/ EX_glyc_S(e), dunno if that's ok
-    if cellfun('isempty', check)       %if no match for met
+    excrxnname=strcat('EX_',strcat(mA{i},'(e)'));
+    excrxnind=find(strcmp(excrxnname,breast_tumor.rxns));
+    if isempty(excrxnind)   %No match for this met
         indicestrim=[indicestrim i];
     end
+
+%     check=regexp(breast_tumor.rxns,trimmet);    %regexp has loosest definitions of a match, glyc matches w/ EX_glyc_S(e), dunno if that's ok
+%     if cellfun('isempty', check)       %if no match for met
+%         indicestrim=[indicestrim i];
+%     end
+end
+
+%display the met exception by comparing trimmed and nontrimmed
+excepts=setdiff(indices,indicestrim);
+for k=1:length(excepts)
+    disp(metsArray(excepts(k)));
 end
