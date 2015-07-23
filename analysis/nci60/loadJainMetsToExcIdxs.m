@@ -5,6 +5,10 @@ for i=1:length(jainMetsArray)
         excrxnname='EX_glc(e)';
         excrxnind=find(strcmp(excrxnname,model.rxns));
         jainMetsToExcIdxs(jainMetsArray{i})=excrxnind;
+    elseif (any(find(strcmp(model.rxns,'cit')))) && strcmp(jainMetsArray{i},'cit/icit') %kidney (none of the model.description have the cancer type)
+        excrxnname='EX_cit(e)';
+        excrxnind=find(strcmp(excrxnname,model.rxns));
+        jainMetsToExcIdxs(jainMetsArray{i})=excrxnind;
     elseif(strcmp(jainMetsArray{i},'N/A'))
         excrxnname='';
         excrxnind=0;
