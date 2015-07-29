@@ -24,11 +24,11 @@ else%this seems like it would load the .mat but something's wrong?
         eval(['modelToRun = ' mCADREFile ';']);
     end
 end
-
-if strcmp(outputPrefix, 'INIT') || strcmp(outputPrefix,'mCADRE')
-    [~, intersectMetIdxsA, intersectMetIdxsB] = union(origRecon2.metFormulas,modelToRun.metFormulas);
-    modelToRun.mets{intersectMetIdxsA} = num2str(origRecon2.mets{intersectMetIdxsB});   %num2str not enough input arguments (old error? no longer shows up)
-    %The right hand side of this assignment has too few values to satisfy the left hand side.
-    modelToRun.metNames{intersectMetIdxsA} = num2str(origRecon2.metNames{intersectMetIdxsB});
-end
-end
+% 
+% if strcmp(outputPrefix, 'INIT') || strcmp(outputPrefix,'mCADRE')
+%     [~, intersectMetIdxsA, intersectMetIdxsB] = union(origRecon2.metFormulas,modelToRun.metFormulas);
+%     modelToRun.mets{intersectMetIdxsA} = num2str(origRecon2.mets{intersectMetIdxsB});   %num2str not enough input arguments (old error? no longer shows up)
+%     %The right hand side of this assignment has too few values to satisfy the left hand side.
+%     modelToRun.metNames{intersectMetIdxsA} = num2str(origRecon2.metNames{intersectMetIdxsB});
+% end
+% end

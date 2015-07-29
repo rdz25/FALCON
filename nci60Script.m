@@ -23,6 +23,7 @@ for i=1:length(inputDirs)
         
         parfor k=1:length(cellLinesArray)
 	    % skip two cell lines where GIMME and iMAT failed to make models
+        %Why does it skip if the output pref isn't GIMME or iMAT
             if ~strcmp(cellLinesArray{k},'MCF7') && ~strcmp(cellLinesArray{k},'K562')
 
 	        % in what follows, run initCobraToolbox at beginning of each iteraction,
@@ -52,25 +53,27 @@ for i=1:length(inputDirs)
                     num2str(intersectIDs), intersectDataA, intersectDataB, GXFBA);
 		    nci60ScriptHelper2([outputDir filesep cellLinesArray{k} '.csv' '_gxfba_flux.mat'], [outputDir filesep cellLinesArray{k} '.csv' '.gxfba.flux'], GXFBAFluxes, origRecon2);
                 else
-                    initCobraToolbox;
-
-		    % load appropriate model depending on inputPrefix
-                    modelToRun = nci60ScriptHelper(origRecon2, outputPrefixes{j}, ...
-                    inputDir, cellLinesArray{k}, INITFilesArray{k}, mCADREFilesArray{k});
-                    
-		    % run FALCON
-                    runFALCONStripped(constrainMediumExc(initializeRecon2(modelToRun)), ...
-                        [inputDir filesep cellLinesArray{k} '.csv'], 1, outputDir);
-                    
-		    % add biomass reaction if necessary, then change objective to that reaction,
-		    % and run FBA
-                    modelToRun = addBiomass(origRecon2,modelToRun);
-                    modelToRun = changeObjective(modelToRun,'biomass_reaction');
-                    FBASoln = optimizeCbModel(constrainMediumExc(initializeRecon2(modelToRun)),1);
-                    v_fba = FBASoln.x;
-                    
-		    % save .mat and .csv.flux files for fba using helper function
-                    nci60ScriptHelper2([outputDir filesep cellLinesArray{k} '.csv' '_fba_flux.mat'], [outputDir filesep cellLinesArray{k} '.csv' '.fba.flux'], v_fba);
+                    if ~strcmp(mCADREFilesArray{k},'na')
+                        initCobraToolbox;
+                        
+                        % load appropriate model depending on inputPrefix
+                        modelToRun = nci60ScriptHelper(origRecon2, outputPrefixes{j}, ...
+                            inputDir, cellLinesArray{k}, INITFilesArray{k}, mCADREFilesArray{k});
+                        
+                        % run FALCON
+                        runFALCONStripped(constrainMediumExc(initializeRecon2(modelToRun)), ...
+                            [inputDir filesep cellLinesArray{k} '.csv'], 1, outputDir);
+                        
+                        % add biomass reaction if necessary, then change objective to that reaction,
+                        % and run FBA
+                        modelToRun = addBiomass(origRecon2,modelToRun);
+                        modelToRun = changeObjective(modelToRun,'biomass_reaction');
+                        FBASoln = optimizeCbModel(constrainMediumExc(initializeRecon2(modelToRun)),1);
+                        v_fba = FBASoln.x;
+                        
+                        % save .mat and .csv.flux files for fba using helper function
+                        nci60ScriptHelper2([outputDir filesep cellLinesArray{k} '.csv' '_fba_flux.mat'], [outputDir filesep cellLinesArray{k} '.csv' '.fba.flux'], v_fba);
+                    end
                 end
             end
         end

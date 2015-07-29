@@ -1,3 +1,4 @@
+initCobraToolbox;
 load(['input' filesep 'SigurdssonMouse.mat']);
 origSigurdssonMouse = mouse1415;
 origSigurdssonMouse.rxnNames = {};
